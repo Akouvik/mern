@@ -1,6 +1,7 @@
 // https://www.youtube.com/watch?v=7CqJlxBYj-M&ab_channel=freeCodeCamp.org
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/navbar.component';
@@ -11,19 +12,16 @@ import CreateUser from './components/create-user.component';
 
 function App() {
   return (
-    <div className="container">
+    <div className="">
       <Router>
         <Navbar />
         <br />
-        <Routes>
-          <Route path="/" exact component={ExercisesList} />
-          <Route path="/edit/:id" component={EditExercises} />
-          <Route path="/create" component={CreateExercises} />
-          <Route path="/user" component={CreateUser} />
-        </Routes>
+        <Route path="/" exact component={ExercisesList} />
+        <Route path="/edit/:id" component={EditExercises} />
+        <Route path="/create" component={CreateExercises} />
+        <Route path="/user" component={CreateUser} />
       </Router>
     </div>
   );
 }
-
 export default App;
