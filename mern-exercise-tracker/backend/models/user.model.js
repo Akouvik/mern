@@ -4,13 +4,16 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       unique: true,
       trim: true,
       minlength: 3,
     },
+    age: { type: String, required: true, trim: true, minlength: 2 },
+    weight: { type: String, required: true, trim: true, minlength: 2 },
+    exercises: { type: Array, trim: true },
   },
   {
     timestamps: true,

@@ -16,7 +16,7 @@ export default class CreateExercise extends Component {
     this.state = {
       username: '',
       description: '',
-      duration: 0,
+      duration: '',
       date: new Date(),
       users: [],
     };
@@ -26,13 +26,16 @@ export default class CreateExercise extends Component {
     axios
       .get('http://localhost:5000/users/')
       .then((response) => {
+        console.log('response', response.data);
+
         if (response.data.length > 0) {
           this.setState({
-            users: response.data.map((user) => user.username),
+            users: response.data.map((user) => user.name),
             username: response.data[0].username,
           });
         }
       })
+
       .catch((error) => {
         console.log(error);
       });
@@ -64,6 +67,7 @@ export default class CreateExercise extends Component {
   }
 
   onSubmit(e) {
+    console.log('sumit');
     e.preventDefault();
 
     const exercise = {
@@ -72,14 +76,18 @@ export default class CreateExercise extends Component {
       duration: this.state.duration,
       date: this.state.date,
     };
-
     console.log(exercise);
 
     axios
       .post('http://localhost:5000/exercises/add', exercise)
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    window.location = '/';
+    window.location = '/exercises';
   }
 
   render() {
@@ -119,6 +127,7 @@ export default class CreateExercise extends Component {
             <label>Duration (in minutes): </label>
             <input
               type="text"
+              placeholder="25"
               className="form-control"
               value={this.state.duration}
               onChange={this.onChangeDuration}

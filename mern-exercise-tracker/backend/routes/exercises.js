@@ -1,21 +1,24 @@
-const router = require('express').Router();
-
+const express = require('express');
+const router = express.Router();
 let Exercise = require('../models/exercise.model');
 
-router.route('/').get((req, res) => {
+router.get('/', (req, res) => {
   Exercise.find()
     .then((exercises) => res.json(exercises))
-    .then((err) => res.status(400).json('Error: ' + err));
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json('Error: ' + err);
+    });
 });
 
-router.route('/add').post((req, res) => {
-  const username = req.body.username;
-  const description = req.body.description;
-  const duration = Number(req.body.duration);
-  const date = Date.parse(req.body.date);
+router.post('/add', (req, res) => {
+  const { name } = req.body;
+  const { description } = req.body;
+  const { duration } = req.body;
+  const { date } = req.body;
 
   const newExercise = new Exercise({
-    username,
+    name,
     description,
     duration,
     date,
@@ -27,19 +30,19 @@ router.route('/add').post((req, res) => {
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').get((req, res) => {
+router.get('/:id', (req, res) => {
   Exercise.findById(req.params.id)
     .then((exercise) => res.json(exercise))
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').delete((req, res) => {
+router.delete('/:id', (req, res) => {
   Exercise.findByIdAndDelete(req.params.id)
     .then(() => res.json('Exercise deleted'))
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update/:id').post((req, res) => {
+router.post('/update/:id', (req, res) => {
   Exercise.findById(req.params.id)
     .then((exercise) => {
       (exercise.username = req.body.username),

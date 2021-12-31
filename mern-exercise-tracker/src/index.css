@@ -18,3 +18,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+#logo {
+  color: white;
+}
+.navitems {
+  align-content: end;
+  position: relative;
+  left: 55%;
+}
+.landing_page {
+  text-align: center;
+}
+
+#landing_message {
+  color: white;
+}

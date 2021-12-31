@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+require('dotenv');
+// const currentUrl = process.env.NODE_ENV
+//   ? process.env.LOCALSERVER
+//   : process.env.DEVELOPMENTSERVER;
 const Exercise = (props) => (
   <tr>
-    <td>{props.exercise.username}</td>
+    <td>{props.exercise.name}</td>
     <td>{props.exercise.description}</td>
     <td>{props.exercise.duration}</td>
     <td>{props.exercise.date.substring(0, 10)}</td>
     <td>
       <Link to={'/edit/' + props.exercise._id} className="font-weight-bold">
         edit
-      </Link>{' '}
-      |{' '}
+      </Link>
       <a
         href="#"
         onClick={() => {
@@ -36,17 +38,17 @@ export default class ExercisesList extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:5000/exercises/')
+      .get(`http://localhost:5000/exercises/`)
       .then((response) => {
         this.setState({ exercises: response.data });
       })
       .catch((error) => {
-        console.log(error);
+        console.log('THE ERROR FROM LIST', error);
       });
   }
 
   deleteExercise(id) {
-    axios.delete('http://localhost:5000/exercises/' + id).then((response) => {
+    axios.delete(`http://localhost:5000/exercises/` + id).then((response) => {
       console.log(response.data);
     });
 
