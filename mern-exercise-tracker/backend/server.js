@@ -9,15 +9,23 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-const uri = process.env.ATLAS_URI;
+const currentUrl = process.env.NODE_ENV
+  ? process.env.MONGODB_URI
+  : process.env.MONGODB_URI_LOCAL;
+
+// const uri = currentUrl;
+
 //connect to our database
 mongoose
-  .connect(uri, {
+  .connect(currentUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log('MongoDB database connection established successfully');
+    console.log(
+      'MongoDB database connection established successfully',
+      currentUrl
+    );
   })
   .catch((err) => {
     console.log('DB Connection Failed', err);

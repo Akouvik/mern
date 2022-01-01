@@ -15,10 +15,12 @@ export default class CreateExercise extends Component {
 
     this.state = {
       username: '',
+      userIds: '',
       description: '',
       duration: '',
       date: new Date(),
       users: [],
+      currentUserId: '',
     };
   }
 
@@ -26,12 +28,12 @@ export default class CreateExercise extends Component {
     axios
       .get('http://localhost:5000/users/')
       .then((response) => {
-        console.log('response', response.data);
-
         if (response.data.length > 0) {
           this.setState({
             users: response.data.map((user) => user.name),
             username: response.data[0].username,
+            userIds: response.data.map((user) => user._id),
+            currentUserId: response.data[0]._id,
           });
         }
       })
@@ -44,6 +46,11 @@ export default class CreateExercise extends Component {
   onChangeUsername(e) {
     this.setState({
       username: e.target.value,
+    });
+    this.state.users.forEach((username, index) => {
+      if (username === e.target.value) {
+        this.state.currentUserId = this.state.userIds[index];
+      }
     });
     this.userInput.current = this.state.username;
   }
@@ -67,11 +74,11 @@ export default class CreateExercise extends Component {
   }
 
   onSubmit(e) {
-    console.log('sumit');
+    console.log(e.target.id);
     e.preventDefault();
 
     const exercise = {
-      username: this.state.username,
+      userId: this.state.currentUserId,
       description: this.state.description,
       duration: this.state.duration,
       date: this.state.date,
@@ -104,9 +111,9 @@ export default class CreateExercise extends Component {
               value={this.state.username}
               onChange={this.onChangeUsername}
             >
-              {this.state.users.map(function (user) {
+              {this.state.users.map(function (user, index) {
                 return (
-                  <option key={user} value={user}>
+                  <option key={user} value={user} id={index}>
                     {user}
                   </option>
                 );
@@ -146,7 +153,7 @@ export default class CreateExercise extends Component {
           <div className="form-group">
             <input
               type="submit"
-              value="Create Exercise Log"
+              value="Create Exercise"
               className="btn btn-primary"
             />
           </div>

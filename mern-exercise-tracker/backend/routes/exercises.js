@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-let Exercise = require('../models/exercise.model');
+const Exercise = require('../models/exercise.model');
+const User = require('../models/user.model');
 
 router.get('/', (req, res) => {
-  Exercise.find()
+  User.find()
     .then((exercises) => res.json(exercises))
     .catch((err) => {
       console.log(err);
@@ -12,20 +13,19 @@ router.get('/', (req, res) => {
 });
 
 router.post('/add', (req, res) => {
-  const { name } = req.body;
+  console.log(req.body);
+  const { userId } = req.body;
   const { description } = req.body;
   const { duration } = req.body;
   const { date } = req.body;
 
-  const newExercise = new Exercise({
-    name,
+  const newExercise = {
     description,
     duration,
     date,
-  });
+  };
 
-  newExercise
-    .save()
+  User.updateOne({ _id: userId }, { $push: { exercises: newExercise } })
     .then(() => res.json('exercise added'))
     .catch((err) => res.status(400).json('Error: ' + err));
 });

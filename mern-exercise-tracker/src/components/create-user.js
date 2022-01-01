@@ -7,6 +7,8 @@ export default class CreateUser extends Component {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeAge = this.onChangeAge.bind(this);
+    this.onChangeWeight = this.onChangeWeight.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
@@ -36,6 +38,7 @@ export default class CreateUser extends Component {
   }
 
   onSubmit(e) {
+    console.log('i was called');
     e.preventDefault();
 
     const user = {
@@ -47,14 +50,18 @@ export default class CreateUser extends Component {
     console.log(user);
 
     axios
-      .post(`${this.currentUrl}/user/create`, user)
-      .then((res) => console.log(res.data));
-
+      .post('http://localhost:5000/user/add', user)
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        console.log(err);
+      });
     this.setState({
       username: '',
       age: '',
       weight: '',
     });
+    alert(this.state.username + ' was added!');
+    window.location = '/exercises/add';
   }
 
   render() {
@@ -80,8 +87,8 @@ export default class CreateUser extends Component {
               required
               placeholder="23"
               className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}
+              value={this.state.age}
+              onChange={this.onChangeAge}
             />
           </div>
 
@@ -92,16 +99,16 @@ export default class CreateUser extends Component {
               required
               placeholder="120 pounds"
               className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}
+              value={this.state.weight}
+              onChange={this.onChangeWeight}
             />
           </div>
+          <input
+            value="Create User"
+            type="submit"
+            className="btn btn-primary center px-5"
+          />
         </form>
-        <input
-          value="Create"
-          type="button"
-          className="btn btn-primary center px-5"
-        />
       </div>
     );
   }

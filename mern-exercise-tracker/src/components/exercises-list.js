@@ -8,9 +8,14 @@ require('dotenv');
 const Exercise = (props) => (
   <tr>
     <td>{props.exercise.name}</td>
-    <td>{props.exercise.description}</td>
-    <td>{props.exercise.duration}</td>
-    <td>{props.exercise.date.substring(0, 10)}</td>
+    {props.exercise.exercises.map((exercise, index) => (
+      <div key={exercise.duration * index}>
+        <td>{exercise.description}</td>
+        <td>{exercise.duration}</td>
+        <td>{exercise.duration}</td>
+      </div>
+    ))}
+    {/* <td>{props.exercise.date.substring(0, 10)}</td> */}
     <td>
       <Link to={'/edit/' + props.exercise._id} className="font-weight-bold">
         edit
@@ -41,6 +46,7 @@ export default class ExercisesList extends Component {
       .get(`http://localhost:5000/exercises/`)
       .then((response) => {
         this.setState({ exercises: response.data });
+        console.log(response.data);
       })
       .catch((error) => {
         console.log('THE ERROR FROM LIST', error);
@@ -62,7 +68,7 @@ export default class ExercisesList extends Component {
       return (
         <Exercise
           exercise={currentexercise}
-          deleteExercise={this.deleteExercise}
+          // deleteExercise={this.deleteExercise}
           key={currentexercise._id}
         />
       );
